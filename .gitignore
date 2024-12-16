@@ -2,9 +2,9 @@
 *.mhd
 *~
 *pyc
-cloudmr-tools/CMRO/
+cmrtools/CMRO/
 docs/
 dist/
-cloudmr-tools/dev*
+cmrtools/dev*
 *.mat
-cloudmr-tools/data/
+cmrtools/data/

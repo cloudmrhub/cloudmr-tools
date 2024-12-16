@@ -1,11 +1,11 @@
 import numpy as np
-import cloudmr-tools.cm2D as cm2D
+import cmrtools.cm2D as cm2D
 
 import matplotlib.pyplot as plt
 import  twixtools
 
-s='cloudmr-tools/data/meas_MID00024_FID188178_Multislice.dat'
-n='cloudmr-tools/data/meas_MID00027_FID188181_Multislice_no_RF.dat'
+s='cmrtools/data/meas_MID00024_FID188178_Multislice.dat'
+n='cmrtools/data/meas_MID00027_FID188181_Multislice_no_RF.dat'
 
 twix=twixtools.map_twix(s)
 im_array = twix[0]['image']

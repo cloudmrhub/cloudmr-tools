@@ -42,7 +42,36 @@ If you use **Cloudmr-tools** in your research, please cite:
 Montin E, Lattanzi R. Seeking a Widely Adoptable Practical Standard to Estimate Signal-to-Noise Ratio in Magnetic Resonance Imaging for Multiple-Coil Reconstructions. J Magn Reson Imaging. 2021 Dec;54(6):1952-1964. doi: 10.1002/jmri.27816. Epub 2021 Jul 4. PMID: 34219312; PMCID: PMC8633048.
 
 
-## Contributors
+# **Versioning**
+
+The **Cloudmr-tools** package has two versions:
+
+### **V1 (Deprecated)**
+- **Name:** `cloudmrhub`
+- **Status:** Deprecated, but still functional for backward compatibility. (v1 branch)
+- **Details:** This version is no longer actively maintained and will not receive updates or bug fixes.
+
+
+## **Version 2 (Current)**
+- **Name:** `cloudmr-tools`
+- **Status:** Actively maintained (main branch).
+- **Details:** This is the recommended version for new projects. It includes updated functionality and better support for advanced features.
+
+---
+
+## **Key Differences**
+| Feature                 | Version 1 (`cloudmrhub`)      | Version 2 (`cloudmr-tools`)  |
+|-------------------------|------------------------------|-----------------------------|
+| Maintenance             | Deprecated                  | Actively maintained         |
+| Compatibility           | Legacy projects             | New and legacy projects     |
+| Features                | Limited                     | Updated and expanded        |
+---
+
+## **Migration**
+If you're currently using **Version 1**, consider migrating to **Version 2** to take advantage of the latest features and updates.
+
+
+# Contributors
 [*Dr. Eros Montin, PhD*](http://me.biodimensional.com)\
 [![GitHub](https://img.shields.io/badge/GitHub-erosmontin-blue)](https://github.com/erosmontin)\
 [![ORCID](https://img.shields.io/badge/ORCID-0000--0002--1773--0064-green)](https://orcid.org/0000-0002-1773-0064)\

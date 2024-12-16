@@ -7,4 +7,5 @@ docs/
 dist/
 cmrtools/dev*
 *.mat
+.vscode/
 

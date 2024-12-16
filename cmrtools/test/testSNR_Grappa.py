@@ -1,6 +1,6 @@
 import numpy as np
-import cloudmrhub.cm2D as cm2D
-import cloudmrhub.cm as cm
+import cmrtools.cm2D as cm2D
+import cmrtools.cm as cm
 import matplotlib.pyplot as plt
 import  twixtools
 

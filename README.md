@@ -6,7 +6,7 @@
 ![GitHub forks](https://img.shields.io/github/forks/cloudmrhub/cloudmr-tools)
 ![GitHub stars](https://img.shields.io/github/stars/cloudmrhub/cloudmr-tools)
 
-“**Cloudmr-tools** provides tools for advanced multi-coil reconstruction methods for Magnetic Resonance Imaging (MRI). Designed for researchers and developers in the field of MRI, this package supports streamlined implementation of reconstruction techniques like RSS, SENSE, and G-Factor calculation.”
+**Cloudmr-tools** provides tools for advanced multi-coil reconstruction methods for Magnetic Resonance Imaging (MRI). Designed for researchers and developers in the field of MRI, this package supports streamlined implementation of reconstruction techniques like RSS, SENSE, and G-Factor calculation.
 
 
 ## Quickstart

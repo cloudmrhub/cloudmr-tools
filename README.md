@@ -1,5 +1,15 @@
 # Cloudmr-tools
+![License](https://img.shields.io/github/license/cloudmrhub/cloudmr-tools)
+![GitHub last commit](https://img.shields.io/github/last-commit/cloudmrhub/cloudmr-tools)
+![GitHub issues](https://img.shields.io/github/issues/cloudmrhub/cloudmr-tools)
 
+![GitHub forks](https://img.shields.io/github/forks/cloudmrhub/cloudmr-tools)
+![GitHub stars](https://img.shields.io/github/stars/cloudmrhub/cloudmr-tools)
+
+“**Cloudmr-tools** provides tools for advanced multi-coil reconstruction methods for Magnetic Resonance Imaging (MRI). Designed for researchers and developers in the field of MRI, this package supports streamlined implementation of reconstruction techniques like RSS, SENSE, and G-Factor calculation.”
+
+
+## Quickstart
 ```python
 from cmrtools.cm2D import cm2DReconB1,cm2DReconRSS,cm2DReconSENSE,cm2DGFactorSENSE
 
@@ -27,9 +37,19 @@ pip install git+https://github.com/cloudmrhub/cloudmr-tools.git
 https://colab.research.google.com/drive/1WIEwRrNy9rpo_2X_zVdwRHRtH4ImPaan?usp=sharing
 
 # Cite Us
-- Montin E, Lattanzi R. Seeking a Widely Adoptable Practical Standard to Estimate Signal-to-Noise Ratio in Magnetic Resonance Imaging for Multiple-Coil Reconstructions. J Magn Reson Imaging. 2021 Dec;54(6):1952-1964. doi: 10.1002/jmri.27816. Epub 2021 Jul 4. PMID: 34219312; PMCID: PMC8633048.
+If you use **Cloudmr-tools** in your research, please cite:
+
+Montin E, Lattanzi R. Seeking a Widely Adoptable Practical Standard to Estimate Signal-to-Noise Ratio in Magnetic Resonance Imaging for Multiple-Coil Reconstructions. J Magn Reson Imaging. 2021 Dec;54(6):1952-1964. doi: 10.1002/jmri.27816. Epub 2021 Jul 4. PMID: 34219312; PMCID: PMC8633048.
 
 
+## Contributors
+[*Dr. Eros Montin, PhD*](http://me.biodimensional.com)\
+[![GitHub](https://img.shields.io/badge/GitHub-erosmontin-blue)](https://github.com/erosmontin)\
+[![ORCID](https://img.shields.io/badge/ORCID-0000--0002--1773--0064-green)](https://orcid.org/0000-0002-1773-0064)\
+[![Scopus](https://img.shields.io/badge/Scopus-35604121500-orange)](https://www.scopus.com/authid/detail.uri?authorId=35604121500)
 
-[*Dr. Eros Montin, PhD*]
-(http://me.biodimensional.com)\
+
+[*Prof. Riccardo Lattanzi*](https://med.nyu.edu/faculty/riccardo-lattanzi)\
+[![GitHub](https://img.shields.io/badge/GitHub-rlattanzi-blue)](https://github.com/rlattanzi)\
+[![ORCID](https://img.shields.io/badge/ORCID-0000--0002--8240--5903-green)](https://orcid.org/0000-0002-8240-5903)\
+[![Scopus](https://img.shields.io/badge/Scopus-6701330033-orange)](https://www.scopus.com/authid/detail.uri?authorId=6701330033)

@@ -1,3 +1,5 @@
+# version: 2
+name changes, SNR removed, matlab version deleted
 # version:1.0.4.4
 no sensmask
 {"method":"no"}

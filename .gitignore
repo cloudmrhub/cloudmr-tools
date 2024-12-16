@@ -2,9 +2,9 @@
 *.mhd
 *~
 *pyc
-cloudmrhub/CMRO/
+cloudmr-tools/CMRO/
 docs/
 dist/
-cloudmrhub/dev*
-B1.mat
-cloudmrhub/data/esp.cfl
+cloudmr-tools/dev*
+*.mat
+cloudmr-tools/data/

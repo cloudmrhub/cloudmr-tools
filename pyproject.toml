@@ -9,13 +9,13 @@ allow-direct-references = true
 include = ["**/*.py"]
 
 [project]
-name = "cloudmrhub"
+name = "cloudmr-tools"
 version = "1.0.4.4.2"
 changes= "CHANGES.md"
 authors = [
   { name="Dr. Eros Montin, PhD", email="eros.montin@gmail.com" },
 ]
-description = "SNR and Recon"
+description = "Utils "
 readme = "README.md"
 requires-python = ">=3.8"
 classifiers = [
@@ -26,8 +26,8 @@ classifiers = [
 dependencies = ["pygrappa","matplotlib","scipy","Pillow","sphinx", "sphinx_rtd_theme","raider_eros_montin @ git+https://github.com/erosmontin/raider.git","pynico_eros_montin @ git+https://github.com/erosmontin/pynico.git","pyable_eros_montin @ git+https://github.com/erosmontin/pyable.git"]
 
 [project.urls]
-"Homepage" = "https://github.com/erosmontin/cloudmrhub"
-"Bug Tracker" = "https://github.com/erosmontin/cloudmrhub/issues"
+"Homepage" = "https://github.com/erosmontin/cloudmr-tools"
+"Bug Tracker" = "https://github.com/erosmontin/cloudmr-tools/issues"
 
 [tool.setuptools.dynamic]
-version = {attr = "cloudmrhub.__version__"}
+version = {attr = "cloudmr-utils.__version__"}

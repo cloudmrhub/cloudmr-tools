@@ -585,7 +585,7 @@ class cm2DReconWithSensitivityAutocalibrated(cm2DReconWithSensitivity):
         if isinstance(ACL, (list, tuple)):
             self.Autocalibration=ACL
         else:
-            self.Autocalibration=[np.NaN,ACL]
+            self.Autocalibration=[np.nan,ACL]
 
         s=self.getSignalKSpaceSize()
 

@@ -68,8 +68,21 @@ The **Cloudmr-tools** package has two versions:
 ---
 
 ## **Migration**
-If you're currently using **Version 1**, consider migrating to **Version 2** to take advantage of the latest features and updates.
 
+If you're currently using **Version 1** of the library, consider migrating to **Version 2** to take advantage of the latest features and updates.
+
+If you need to continue using the Version 1 code, simply change the import path from `cloudmrhub` to `cmtools`. For example:
+
+**Original (Version 1):**
+```python
+import numpy as np
+import cloudmrhub.cm2D as cm2D
+```
+**Modified version (Version 2)**
+```python
+import numpy as np
+import cmtools.cm2D as cm2D
+```
 
 # Contributors
 [*Dr. Eros Montin, PhD*](http://me.biodimensional.com)\

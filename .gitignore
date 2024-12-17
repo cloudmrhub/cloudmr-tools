@@ -2,10 +2,10 @@
 *.mhd
 *~
 *pyc
-cmrtools/CMRO/
+cmtools/CMRO/
 docs/
 dist/
-cmrtools/dev*
+cmtools/dev*
 *.mat
 .vscode/
 

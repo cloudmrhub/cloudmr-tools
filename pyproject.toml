@@ -9,7 +9,7 @@ allow-direct-references = true
 include = ["**/*.py","**/*.pkl"]
 
 [project]
-name = "cmrtools"
+name = "cmtools"
 version = "2.0.0.6"
 changes= "CHANGES.md"
 authors = [
@@ -30,4 +30,4 @@ dependencies = ["pygrappa","matplotlib","scipy","Pillow","sphinx", "sphinx_rtd_t
 "Bug Tracker" = "https://github.com/erosmontin/cloudmr-tools/issues"
 
 [tool.setuptools.dynamic]
-version = {attr = "cmrtools.__version__"}
+version = {attr = "cmtools.__version__"}

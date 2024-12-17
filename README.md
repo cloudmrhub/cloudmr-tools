@@ -11,7 +11,7 @@
 
 ## Quickstart
 ```python
-from cmrtools.cm2D import cm2DReconB1,cm2DReconRSS,cm2DReconSENSE,cm2DGFactorSENSE
+from cmtools.cm2D import cm2DReconB1,cm2DReconRSS,cm2DReconSENSE,cm2DGFactorSENSE
 
 #S= your multi coil K-Space 2D signal
 #N=your multi coil K-Space 2D noise or Noise covariance

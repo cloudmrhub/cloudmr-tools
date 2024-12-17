@@ -23,7 +23,7 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Operating System :: OS Independent",
 ]
-dependencies = ["pygrappa","matplotlib","scipy","Pillow","sphinx", "sphinx_rtd_theme","raider_eros_montin @ git+https://github.com/erosmontin/raider.git","pynico_eros_montin @ git+https://github.com/erosmontin/pynico.git","pyable_eros_montin @ git+https://github.com/erosmontin/pyable.git"]
+dependencies = ["pygrappa","matplotlib","scipy","Pillow","sphinx", "sphinx_rtd_theme","raider_eros_montin @ git+https://github.com/erosmontin/raider.git","pynico_eros_montin @ git+https://github.com/erosmontin/pynico.git","pyable_eros_montin @ git+https://github.com/erosmontin/pyable.git","requests"]
 
 [project.urls]
 "Homepage" = "https://github.com/erosmontin/cloudmr-tools"

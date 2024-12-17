@@ -593,8 +593,20 @@ def get_noise_for(file):
     return np.asarray(noise_data)
 	
 import scipy
-def savemat(fn,var):
-    scipy.io.savemat(fn, {"export":var})
+def saveMatlab(fn,vars):
+    """
+    Save variables to a Matlab file.
+    
+    Args:
+        fn: The filename mat file.
+        vars: [{"name": "var1", "data": data1}, {"name": "var2", "data": data2}            
+        ]
+    
+    """
+    J=dict()
+    for k in vars:
+        J[k["name"].replace(" ","")]=k["data"]
+    scipy.io.savemat(fn,J)
 
 
 import matplotlib.pyplot as plt

@@ -2,7 +2,7 @@ import numpy as np
 try:
     import cm #dev
 except:
-    import cmrtools.cm as cm #runtime
+    import cmtools.cm as cm #runtime
     
 import matplotlib.pyplot as plt
 import scipy

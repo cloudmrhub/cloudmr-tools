@@ -56,7 +56,7 @@ class i3d(i2d):
 try:
     import cm2D #dev
 except:
-    import cmrtools.cm2D as cm2D #runtime
+    import cmtools.cm2D as cm2D #runtime
     
 import matplotlib.pyplot as plt
 class k2d(i2d):
@@ -723,7 +723,7 @@ def resizeIM2D(IM,new_size):
 try:
     import espirit
 except:
-    import cmrtools.espirit as espirit
+    import cmtools.espirit as espirit
     
 def sensitivitiesEspirit2D(ref, k=6, r=24,t=0.01, c=0.9925,debug=False):
     #it's 2d so i have t add a new axis to the ref kspace

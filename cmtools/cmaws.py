@@ -291,3 +291,18 @@ class cmrOutput:
         if deletezip:
             shutil.rmtree(p)
         return O
+    
+    
+    
+if __name__=="__main__":
+    
+    filedict = {
+    "options": {
+    "type": "local",
+    "filename": "/data/PROJECTS/mroptimum/_data/signal.dat",
+    "options": {},
+    "multiraid": False,
+    "vendor": "Siemens"
+}
+    }
+    getCMRFile(filedict["options"])

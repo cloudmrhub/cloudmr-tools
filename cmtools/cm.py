@@ -53,11 +53,7 @@ class i3d(i2d):
     
 
 
-try:
-    import cm2D #dev
-except:
-    import cmtools.cm2D as cm2D #runtime
-    
+   
 import matplotlib.pyplot as plt
 class k2d(i2d):
     """
@@ -68,13 +64,15 @@ class k2d(i2d):
         super().__init__(k)
     def getNCoils(self):
         return self.k.shape[-1]
-    def plot(self):
+    def plot(self,plot=True):
         if not self.isEmpty():
-            R=cm2D.cm2DReconRSS()
-            R.setPrewhitenedSignal(self.k)
-            plt.imshow(np.abs(R.getOutput()))
+            SC=np.sqrt(np.prod(np.array(self.k.shape[0:2])))
+            K=MRifft(self.K,[0,1])*SC
+            im = np.sqrt(np.sum(np.abs(K)**2,axis=-1))
+            plt.imshow(np.abs(im),cmap='gray')
             plt.colorbar()
-            plt.show()
+            if plot:
+                plt.show()
     
 class sk2d(i2d):
     """
@@ -87,7 +85,8 @@ class sk2d(i2d):
     
 from scipy.ndimage import binary_fill_holes
 from scipy.ndimage import label, sum
-from scipy.ndimage.morphology import binary_fill_holes, binary_erosion, binary_dilation
+from scipy.ndimage import binary_fill_holes
+from scipy.ndimage.morphology import binary_erosion, binary_dilation
 from scipy.ndimage import generate_binary_structure
 def calculateCoilsSensitivityMask2D(mask,ref_img,K):
     """_summary_

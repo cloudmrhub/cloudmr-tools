@@ -3,7 +3,10 @@ import uuid
 import boto3
 from pynico_eros_montin import pynico as pn
 import shutil
-from cm import saveMatlab
+try:
+    from .cm import saveMatlab
+except:
+    from cmtools.cm import saveMatlab
 
 
 #FILESDICT example

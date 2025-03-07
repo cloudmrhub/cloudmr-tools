@@ -141,25 +141,29 @@ import numpy as np
 
 
     
-
+import os
 
 class cmrOutput:
-    def __init__(self,app=None,filename=None,path=None,s3=None):
+    def __init__(self,app=None,outputfilename=None,tmppath=None,s3=None):
             self.out={"headers":{"options":{}},"data":[]}
-            if filename!=None:
-                self.outputfilename=pn.Pathable(filename)
-            else:
-                self.outputfilename=pn.createRandomTemporaryPathableFromFileName("a.zip")
             
-            self.outputfilename.ensureDirectoryExistence()
-            if path==None:
-                self.outputpath=pn.createRandomTemporaryPathableFromFileName(self.outputfilename.getPosition()).appendPathRandom()
+            if outputfilename!=None:
+                self.outputfilenamepathable=pn.Pathable(outputfilename)
             else:
-                self.outputpath=pn.Pathable(path)
-            self.outputpath.ensureDirectoryExistence()
-            self.outputfilename.ensureDirectoryExistence()
+                self.outputfilenamepathable=pn.createRandomTemporaryPathableFromFileName("a.zip")
+            self.outputfilenamepathable.ensureDirectoryExistence()
+            
+            if tmppath==None:
+                self.tmppathable=pn.createRandomTemporaryPathableFromFileName(self.outputfilenamepathable.getBaseName()).appendPathRandom()
+            else:
+                if not tmppath.endswith("/"):
+                    tmppath=tmppath+"/"
+                self.tmppathable=pn.Pathable(tmppath)
+            self.tmppathable.ensureDirectoryExistence()
+            self.outputfilenamepathable.ensureDirectoryExistence()
             self.setApp(app)
-            self.forkable=self.outputpath.fork()
+            #self.tmppathable wil, be the place where i stored the directory before making the zip
+            self.forkable=self.tmppathable.fork()
             self.forkable.addBaseName("data")
             self.savematlab=True          
 
@@ -233,33 +237,40 @@ class cmrOutput:
         l.writeJson(a)
 
     def exportResults(self):
-        outputdirectory=self.outputpath.getPath()
-        #check id the data are in the expected directory
+        tmpdirectory=self.tmppathable.getPath()
+        #check if the data are in the expected directory
         J=[]
+        INFO=[]
         for d in self.out["data"]:
-            theo= outputdirectory+"/data/"+d["basename"]
-            pn.Pathable(theo).ensureDirectoryExistence()
-
+            tmpfile= tmpdirectory+"/data/"+d["basename"]
+            pn.Pathable(tmpfile).ensureDirectoryExistence()
             if d["filename"]==None:
-                d["able"].writeImageAs(theo)
-            
-            elif d["filename"]!=theo:
-                shutil.copy(d["filename"],theo)
-            d["filename"]="data/"+d["basename"]
+                d["able"].writeImageAs(tmpfile)
+            elif d["filename"]!=tmpfile:
+                shutil.copy(d["filename"],tmpfile)
+            d["filename"]=tmpfile
             
             if self.savematlab:
                 J.append({"name":d["name"],"data":d["able"].getImageAsNumpy()})
-            if "able" in d.keys():
-                del d["able"]
+            # if "able" in d.keys():
+            #     del d["able"]
             # if "basename" in d.keys():
             #     del d["basename"]
+            info=d.copy()
+            if "able" in info.keys():
+                del info["able"]
+            if "basename" in info.keys():
+                del info["basename"]
+            INFO.append(info)
 
         #write the json file
         OUT=self.forkable.fork()
         OUT.changeBaseName("info.json")
-        OUT.writeJson(self.out)
-        OUT.changeBaseName("matlab.mat")
-        saveMatlab(OUT.getPosition(),J)
+        OUT.writeJson(INFO)
+        if self.savematlab:
+            OUT.changeBaseName("matlab.mat")
+            saveMatlab(OUT.getPosition(),J)
+        return tmpdirectory
 
     def changeOutputPath(self,path):
         #copy the data to the new path
@@ -273,39 +284,49 @@ class cmrOutput:
         return self.outputpath.getPosition()
 
 
-    def exportAndZipResults(self,outzipfile=None,delete=False):
-        p=self.exportResults()
+    def exportAndZipResults(self,outzipfile=None,deletetemporarydirectory=False):
+        tmpdirectory=self.exportResults()
+        # in case the output file is not specified, i will use the outputfilenamepathable
         if outzipfile==None:
-            outzipfile=self.outputfilename.getPosition()
-        print(f"{ self.outputpath.getPosition()} - {p} -{outzipfile}")
+            outzipfile=self.outputfilenamepathable.getPosition()
         ext=pn.Pathable(outzipfile).getExtension()
-        print(ext)
         fi=outzipfile.replace(f'.{ext}',"")
-        print(fi,ext)
-        shutil.make_archive(fi,ext , self.outputpath.getPosition())
-        if delete:
-            shutil.rmtree(self.outputpath.getPosition())
+        shutil.make_archive(fi,ext , tmpdirectory)
+        if deletetemporarydirectory:
+            shutil.rmtree(tmpdirectory)
         return outzipfile
     
-    def exportAndZipResultsToS3(self,bucket,key=None,outzipfile=None,delete=False,deletezip=False,s3=None):
-        p=self.exportAndZipResults(outzipfile=outzipfile,delete=delete)
-        print(f"file {p} will be upladed to {bucket}/{key}")
+    def exportAndZipResultsToS3(self,bucket,key=None,outzipfile=None,deletetemporarydirectory=False,deleteoutputzip=False,s3=None):
+        p=self.exportAndZipResults(outzipfile=outzipfile,deletetemporarydirectory=deletetemporarydirectory)
         O= uploadFiletoS3(p,bucket,key,s3=s3)
-        if deletezip:
-            shutil.rmtree(p)
+        if deleteoutputzip:
+            os.remove(p)
         return O
     
     
     
 if __name__=="__main__":
     
-    filedict = {
-    "options": {
-    "type": "local",
-    "filename": "/data/PROJECTS/mroptimum/_data/signal.dat",
-    "options": {},
-    "multiraid": False,
-    "vendor": "Siemens"
-}
-    }
-    getCMRFile(filedict["options"])
+#     filedict = {
+#     "options": {
+#     "type": "local",
+#     "filename": "/data/PROJECTS/mroptimum/_data/signal.dat",
+#     "options": {},
+#     "multiraid": False,
+#     "vendor": "Siemens"
+# }
+#     }
+#     getCMRFile(filedict["options"])
+
+    
+    A=cmrOutput()
+    A.addAbleFromFilename("/data/garbage/dataMYDATASRIKARPCFT1173original.nii.gz",1,"signal")
+    
+    P=A.exportResults()
+    print(P)
+    P=A.exportAndZipResults()
+    print(P)
+    s3=getS3ResourceFromCredentials("/home/eros/.aws/credentials")
+    O=A.exportAndZipResultsToS3("mytestcmr",s3=s3,deletetemporarydirectory=True,deleteoutputzip=True)
+    print(O)
+    print("done")

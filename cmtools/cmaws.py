@@ -253,11 +253,7 @@ class cmrOutput:
             
             if self.savematlab:
                 J.append({"name":d["name"],"data":d["able"].getImageAsNumpy()})
-            # if "able" in d.keys():
-            #     del d["able"]
-            # if "basename" in d.keys():
-            #     del d["basename"]
-            info=d.copy()
+             info=d.copy()
             info["filename"]=relativename
             if "able" in info.keys():
                 del info["able"]
@@ -322,13 +318,14 @@ if __name__=="__main__":
 
     
     A=cmrOutput()
+    L=ima.Imaginable(filename="/data/garbage/dataMYDATASRIKARPCFT1173original.nii.gz")
+    L.cast("float64")
     A.addAbleFromFilename("/data/garbage/dataMYDATASRIKARPCFT1173original.nii.gz",1,"signal")
-    
     P=A.exportResults()
     print(P)
     P=A.exportAndZipResults()
     print(P)
     s3=getS3ResourceFromCredentials("/home/eros/.aws/credentials")
-    O=A.exportAndZipResultsToS3("mytestcmr",s3=s3,deletetemporarydirectory=True,deleteoutputzip=True)
-    print(O)
+    # O=A.exportAndZipResultsToS3("mytestcmr",s3=s3,deletetemporarydirectory=True,deleteoutputzip=True)
+    # print(O)
     print("done")

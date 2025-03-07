@@ -240,7 +240,8 @@ class cmrOutput:
         tmpdirectory=self.tmppathable.getPath()
         #check if the data are in the expected directory
         J=[]
-        INFO=[]
+        INFO=self.out.copy()
+        INFO["data"]=[]
         for d in self.out["data"]:
             tmpfile= tmpdirectory+"/data/"+d["basename"]
             pn.Pathable(tmpfile).ensureDirectoryExistence()
@@ -261,8 +262,8 @@ class cmrOutput:
                 del info["able"]
             if "basename" in info.keys():
                 del info["basename"]
-            INFO.append(info)
-
+            INFO["data"].append(info)
+        
         #write the json file
         OUT=self.forkable.fork()
         OUT.changeBaseName("info.json")

@@ -243,13 +243,13 @@ class cmrOutput:
         INFO=self.out.copy()
         INFO["data"]=[]
         for d in self.out["data"]:
-            tmpfile= tmpdirectory+"/data/"+d["basename"]
+            relativename="data/"+d["basename"]
+            tmpfile= tmpdirectory+"/" + relativename
             pn.Pathable(tmpfile).ensureDirectoryExistence()
             if d["filename"]==None:
                 d["able"].writeImageAs(tmpfile)
             elif d["filename"]!=tmpfile:
                 shutil.copy(d["filename"],tmpfile)
-            d["filename"]=tmpfile
             
             if self.savematlab:
                 J.append({"name":d["name"],"data":d["able"].getImageAsNumpy()})
@@ -258,6 +258,7 @@ class cmrOutput:
             # if "basename" in d.keys():
             #     del d["basename"]
             info=d.copy()
+            info["filename"]=relativename
             if "able" in info.keys():
                 del info["able"]
             if "basename" in info.keys():

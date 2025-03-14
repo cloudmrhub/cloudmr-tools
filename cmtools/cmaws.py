@@ -253,7 +253,7 @@ class cmrOutput:
             
             if self.savematlab:
                 J.append({"name":d["name"],"data":d["able"].getImageAsNumpy()})
-             info=d.copy()
+            info=d.copy()
             info["filename"]=relativename
             if "able" in info.keys():
                 del info["able"]

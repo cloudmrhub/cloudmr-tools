@@ -181,7 +181,11 @@ class cmrOutput:
 
         if np.iscomplexobj(im):
             pixeltype='complex'
-            L.setImageFromNumpy(im.astype(np.singlecomplex))
+            try:
+                L.setImageFromNumpy(im.astype(np.singlecomplex))
+            except:
+                L.setImageFromNumpy(im.astype(np.complex64))
+                
         if basename==None:
             basename=pn.createRandomTemporaryPathableFromFileName("a.nii.gz").getBaseName()
         o={'filename':None,

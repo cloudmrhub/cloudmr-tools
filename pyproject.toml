@@ -10,7 +10,7 @@ include = ["**/*.py","**/*.pkl"]
 
 [project]
 name = "cmtools"
-version = "2.0.1.0"
+version = "2.0.1.1"
 changes= "CHANGES.md"
 authors = [
   { name="Dr. Eros Montin, PhD", email="eros.montin@gmail.com" },

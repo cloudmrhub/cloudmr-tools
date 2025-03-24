@@ -277,7 +277,8 @@ class cmrOutput:
             OUT.changeBaseName("matlab.mat")
             saveMatlab(OUT.getPosition(),J)
         for s in self.auxiliaryFiles:
-            shutil.copy(s,tmpdirectory)
+            print(s,"->",tmpdirectory)
+            shutil.copy(s,tmpdirectory+'/')
             
         return tmpdirectory
 

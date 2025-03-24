@@ -166,7 +166,7 @@ class cmrOutput:
             self.forkable=self.tmppathable.fork()
             self.forkable.addBaseName("data")
             self.savematlab=True          
-
+            self.auxiliaryFiles=[]
     
     def addAbleFromFilename(self,filename,id,name,type="output"):
         L=ima.Imaginable(filename=filename)
@@ -174,6 +174,10 @@ class cmrOutput:
         o=self.addAble(L,id,name,type,N.getBaseName())
         o["filename"]=filename
         return o
+    
+    def addAuxiliaryFile(self,filename):
+        self.auxiliaryFiles.append(filename)
+    
         
     def addAble(self,L,id,name,type="output",basename=None):
         pixeltype='real'
@@ -272,6 +276,9 @@ class cmrOutput:
         if self.savematlab:
             OUT.changeBaseName("matlab.mat")
             saveMatlab(OUT.getPosition(),J)
+        for s in self.auxiliaryFiles:
+            shutil.copy(s,tmpdirectory)
+            
         return tmpdirectory
 
     def changeOutputPath(self,path):
@@ -322,9 +329,11 @@ if __name__=="__main__":
 
     
     A=cmrOutput()
-    L=ima.Imaginable(filename="/data/garbage/dataMYDATASRIKARPCFT1173original.nii.gz")
+    L=ima.Imaginable(filename="/data/garbage/original.nii")
     L.cast("float64")
-    A.addAbleFromFilename("/data/garbage/dataMYDATASRIKARPCFT1173original.nii.gz",1,"signal")
+    A.addAbleFromFilename("/data/garbage/f.nii",1,"signal")
+    A.addAuxiliaryFile('/home/eros/1.png')
+    
     P=A.exportResults()
     print(P)
     P=A.exportAndZipResults()

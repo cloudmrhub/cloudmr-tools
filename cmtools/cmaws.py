@@ -278,7 +278,12 @@ class cmrOutput:
             saveMatlab(OUT.getPosition(),J)
         for s in self.auxiliaryFiles:
             print(s,"->",tmpdirectory)
-            shutil.copy(s,tmpdirectory+'/')
+            try:
+                shutil.copy(s,tmpdirectory+'/')
+            except(Exception) as e:
+                print(e)
+            
+                
             
         return tmpdirectory
 

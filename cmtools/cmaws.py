@@ -155,8 +155,7 @@ class cmrOutput:
         im=L.getImageAsNumpy()
 
         if np.iscomplexobj(im):
-            # Convert to two-channel float64: [real, imag]
-            L.setImageFromNumpy(im.astype(np.complex128))
+            L.setImageFromNumpy(im.astype(np.complex64))
 
             pixeltype = 'complex'
         else:

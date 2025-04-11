@@ -84,6 +84,37 @@ import numpy as np
 import cmtools.cm2D as cm2D
 ```
 
+## Explanation of the Code and Main Functions
+
+Below is a high-level summary of the repository’s structure and functionality:
+
+1. **cmtools/cm.py**  
+   - Utilities for MRI data processing, including coil-sensitivity maps, GRAPPA recon, noise pre-whitening, and simpler SENSE-based reconstructions.  
+   - Provides various classes for 2D/3D image data (e.g., `i2d`, `k2d`), helper functions (e.g., `getGRAPPAKspace`, `prewhiteningSignal`), and logging/export support.
+
+2. **cmtools/espirit.py**  
+   - Implements ESPIRiT to generate coil-sensitivity maps using multi-channel k-space data.  
+   - Core functions like `espirit(...)` and `espirit_proj(...)` let you compute coil maps and project coil images onto the ESPIRiT operator space.
+
+3. **cmtools/version.py**  
+   - Simple script for printing package versions of dependencies.
+
+4. **cmtools/cfl.py**  
+   - Helper functions `readcfl` and `writecfl` to read/write BART `.cfl`/`.hdr` files.
+
+5. **cmtools/cmaws.py**  
+   - Handles AWS S3 interactions: uploading/downloading of data, retrieving files, and credential management.  
+   - Includes the `cmrOutput` class, which simplifies exporting and zipping results for local storage or S3 uploads.
+
+6. **tests.py and tests2.py**  
+   - Example scripts demonstrating how to run recon steps (using GRAPPA, SENSE, or custom coil-sensitivity methods).  
+   - Show how to integrate with `cmtools` pipelines for quick testing and validation.
+
+7. **pyproject.toml**  
+   - Project metadata (e.g., name, version, build dependencies) and configuration for build tools.
+
+Refer to individual script docstrings or the code itself for more information on each function’s parameters and usage.
+
 # Contributors
 [*Dr. Eros Montin, PhD*](http://me.biodimensional.com)\
 [![GitHub](https://img.shields.io/badge/GitHub-erosmontin-blue)](https://github.com/erosmontin)\

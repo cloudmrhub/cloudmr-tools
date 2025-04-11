@@ -156,10 +156,8 @@ class cmrOutput:
 
         if np.iscomplexobj(im):
             # Convert to two-channel float64: [real, imag]
-            real_part = im.real.astype(np.float64)
-            imag_part = im.imag.astype(np.float64)
-            combined = np.stack((real_part, imag_part), axis=-1)
-            L.setImageFromNumpy(combined)
+            L.setImageFromNumpy(im.astype(np.complex128))
+
             pixeltype = 'complex'
         else:
             # Convert to float64

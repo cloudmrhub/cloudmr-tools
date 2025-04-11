@@ -1,4 +1,3 @@
-
 import uuid
 import boto3
 from pynico_eros_montin import pynico as pn
@@ -7,34 +6,6 @@ try:
     from .cm import saveMatlab
 except:
     from cmtools.cm import saveMatlab
-
-
-#FILESDICT example
-# Initialize an S3 client
-# s3
-# filedict = {
-#     "type": "file",
-#     "id": -1,
-#     "options": {
-#         "type": "s3",
-#         "filename": "file.nii.gz",
-#         "bucket": "my-s3-bucket",
-#         "key": "aaaaaxxxcdcdcdcdcdcd.nii.gz",
-#         "options": {}
-#     }
-# }
-
-
-# local
-# filedict = {
-#     "type": "file",
-#     "id": -1,
-#     "options": {
-#         "type": "local",
-#         "filename": "/data/MYDATA/TESStestData/Density.nii.gz",
-#         "options": {}
-#     }
-# }
 
 
 def getAwsCredentials(credentialsfn='~/.aws/credentials'):
@@ -184,12 +155,15 @@ class cmrOutput:
         im=L.getImageAsNumpy()
 
         if np.iscomplexobj(im):
-            pixeltype='complex'
-            try:
-                L.setImageFromNumpy(im.astype(np.singlecomplex))
-            except:
-                L.setImageFromNumpy(im.astype(np.complex64))
-                
+            # Convert to two-channel float64: [real, imag]
+            real_part = im.real.astype(np.float64)
+            imag_part = im.imag.astype(np.float64)
+            combined = np.stack((real_part, imag_part), axis=-1)
+            L.setImageFromNumpy(combined)
+            pixeltype = 'complex'
+        else:
+            # Convert to float64
+            L.setImageFromNumpy(im.astype(np.float64))
         if basename==None:
             basename=pn.createRandomTemporaryPathableFromFileName("a.nii.gz").getBaseName()
         o={'filename':None,
@@ -335,16 +309,32 @@ if __name__=="__main__":
 
     
     A=cmrOutput()
-    L=ima.Imaginable(filename="/data/garbage/original.nii")
-    L.cast("float64")
-    A.addAbleFromFilename("/data/garbage/f.nii",1,"signal")
-    A.addAuxiliaryFile('/home/eros/1.png')
+    # L=ima.Imaginable(filename="/data/garbage/original.nii")
+    # L.cast("float64")
+    # A.addAbleFromFilename("/data/garbage/f.nii",1,"signal")
+    # A.addAuxiliaryFile('/home/eros/1.png')
     
-    P=A.exportResults()
-    print(P)
+    # P=A.exportResults()
+    # print(P)
+    # P=A.exportAndZipResults()
+    # print(P)
+    # s3=getS3ResourceFromCredentials("/home/eros/.aws/credentials")
+    # # O=A.exportAndZipResultsToS3("mytestcmr",s3=s3,deletetemporarydirectory=True,deleteoutputzip=True)
+    # # print(O)
+    # print("done")
+    
+        
+    data=np.random.rand(10,10,10) + 1j*np.random.rand(10,10,10)
+    IM=ima.Imaginable()
+    IM.setImageFromNumpy(data)
+    C=IM.forkDuplicate()
+    C.setImageFromNumpy(data.astype(np.complex64))
+    A.addAble(C,0,"signal_complex64",type="output")
+    D=IM.forkDuplicate()
+    D.setImageFromNumpy(data.astype(np.complex128))
+    A.addAble(D,1,"signal_complex128",type="output")
+    E=IM.forkDuplicate()
+    E.setImageFromNumpy(data.astype(np.float32))
+    A.addAble(E,2,"signal_float32",type="output")
     P=A.exportAndZipResults()
     print(P)
-    s3=getS3ResourceFromCredentials("/home/eros/.aws/credentials")
-    # O=A.exportAndZipResultsToS3("mytestcmr",s3=s3,deletetemporarydirectory=True,deleteoutputzip=True)
-    # print(O)
-    print("done")

@@ -751,27 +751,29 @@ def needs_regridding(K, acceleration):
     return sum(np.mod(S[1:2], [accf, accp])) != 0
 
    
-def getACLGrids(K,acl=[20,20]):
+import numpy as np
+
+def getACLGrids(K, acl=[20,20]):
     nX, nY, nCoils = K.shape
-    frequencyautocalibration, phaseautocalibration=acl
+    frequencyautocalibration, phaseautocalibration = acl
 
     if phaseautocalibration > nY or frequencyautocalibration > nX:
-        raise Exception('The Number of requested Autocalibrations lines is greater than the kspace size')
-    # Ysamp_u = np.arange(0, nY, phaseacceleration)
-    # Ysamp_ACL = np.arange(nY // 2 - phaseautocalibration // 2 ,
-    #                         nY // 2 + phaseautocalibration // 2)
-    if phaseautocalibration>0:
-        Ysamp_ACL = np.arange(nY//2-phaseautocalibration//2+1 , np.floor(nY/2)+phaseautocalibration//2,dtype=int)
+        raise Exception('The number of requested autocalibration lines is greater than the kspace size')
+    
+    if phaseautocalibration > 0:
+        y_start = nY // 2 - phaseautocalibration // 2
+        Ysamp_ACL = np.arange(y_start, y_start + phaseautocalibration, dtype=int)
     else:
-        Ysamp_ACL =np.array([],dtype=int)
-
-    if frequencyautocalibration>0:
-        Xsamp_ACL = np.arange(nX//2-frequencyautocalibration//2+1 , np.floor(nX/2)+frequencyautocalibration//2,dtype=int)
+        Ysamp_ACL = np.array([], dtype=int)
+    
+    if frequencyautocalibration > 0:
+        x_start = nX // 2 - frequencyautocalibration // 2
+        Xsamp_ACL = np.arange(x_start, x_start + frequencyautocalibration, dtype=int)
     else:
-        Xsamp_ACL =np.array([],dtype=int)
+        Xsamp_ACL = np.array([], dtype=int)
 
-    # Xsamp = np.union1d(Xsamp_u, Xsamp_ACL)
-    return Xsamp_ACL,Ysamp_ACL
+    return Xsamp_ACL, Ysamp_ACL
+
 
 def getUndersampleGrids(K, acceleration=[1,2]):
     nX, nY, nCoils = K.shape
@@ -780,7 +782,37 @@ def getUndersampleGrids(K, acceleration=[1,2]):
     Xsamp = np.arange(0, nX, frequencyacceleration)
     return Xsamp,Ysamp
 
-def mimicAcceleration2D(K, acceleration=[1,2],ACL=[np.nan,20]):
+
+    return K
+import numpy as np
+def mimicReference2D(K,ACL,filter=None):
+    REFERENCE=np.zeros_like(K)
+    x,y=getACLGrids(K,acl=ACL)
+    
+    _ref=K[min(x):max(x)+1,min(y):max(y)+1]
+    
+
+    if filter is not None:
+        nX, nY, nCoils = _ref.shape
+        if filter.lower()=='hanning':
+                window = np.hanning(nY)   # shape (nY,)
+        if filter.lower()=='hamming':
+                window = np.hamming(nY)
+        if filter.lower()=='blackman':
+                window = np.blackman(nY)
+        if filter.lower()=='bartlett':
+                window = np.bartlett(nY)
+        if filter.lower()=='kaiser':
+                window = np.kaiser(nY, 1.0)
+            
+        window=np.tile(window,(nX,1))
+        #tile on the coils
+        window=np.tile(np.expand_dims(window,axis=-1),(1,1,nCoils))
+        _ref=_ref*window
+    REFERENCE[min(x):max(x)+1,min(y):max(y)+1]=_ref
+    return REFERENCE
+    
+def mimicAcceleration2D(K, acceleration=[1,2],ACL=[np.nan,20],filter=None):
     """return a 2D multicoil Kspace data zeropadded with inside the KSpace in the ACL
     plae a np.nan in case you want all the lines in a direction
     """
@@ -794,11 +826,7 @@ def mimicAcceleration2D(K, acceleration=[1,2],ACL=[np.nan,20]):
         for _y in y:
             SIGNAL[_x,_y,:]=K[_x,_y,:]
     
-    REFERENCE=np.zeros_like(K)
-    x,y=getACLGrids(K,acl=ACL)
-    for _x in x:
-        for _y in y:
-            REFERENCE[_x,_y,:]=K[_x,_y,:]
+    REFERENCE=mimicReference2D(K,ACL,filter)
     
     return SIGNAL, REFERENCE
 

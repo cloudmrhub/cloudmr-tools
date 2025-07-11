@@ -201,7 +201,9 @@ class cmOutput:
         self.SubType = "zero"
         self.OUTPUTLOGFILENAME = None
         self.OUTPUTFILENAME = None
-
+        print("----")
+        print("cmOutput created but Deprecated, use cmaws.cmrOutput instead")
+        print("----")
     def addToExporter(self, type, name, value):
         self.Exporter.append([type, name, value])
 

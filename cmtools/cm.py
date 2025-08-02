@@ -208,11 +208,15 @@ def calculateCoilsSensitivityMask2D(mask,ref_img,K):
                 :
             ]
 
-            # 2) pad if too small
-            pad0 = max(-d0, 0)
-            pad1 = max(-d1, 0)
-            pad_top = pad0//2;    pad_bottom = pad0 - pad_top
-            pad_left = pad1//2;   pad_right  = pad1 - pad_left
+            # Recalculate dimensions after cropping
+            s0, s1 = sensmask.shape[:2]
+            d0, d1 = K0 - s0, K1 - s1
+            
+            # 2) pad if still needed
+            pad0 = max(d0, 0)  # Changed from -d0
+            pad1 = max(d1, 0)  # Changed from -d1
+            pad_top = pad0//2; pad_bottom = pad0 - pad_top
+            pad_left = pad1//2; pad_right = pad1 - pad_left
 
             sensmask = np.pad(
                 sensmask,

@@ -198,7 +198,7 @@ def calculateCoilsSensitivityMask2D(mask,ref_img,K):
         s0, s1 = sensmask.shape[:2]
         d0, d1 = K0 - s0, K1 - s1
 
-        if abs(d0) < 4 and abs(d1) < 4 and (d0 or d1):
+        if abs(d0) < 10 and abs(d1) < 10 and (d0 or d1):
             # 1) center‐crop if too big
             start0 = max((s0 - K0)//2, 0)
             start1 = max((s1 - K1)//2, 0)

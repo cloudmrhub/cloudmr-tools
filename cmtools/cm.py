@@ -505,7 +505,7 @@ def get_wien_noise_image(noiseonly, box):
                 pass
     return NOISE
 
-    
+import SimpleITK as sitk
 def writeResultsAsCmJSONOutput(results,filename,info=None):
     """_summary_
 
@@ -530,10 +530,10 @@ def writeResultsAsCmJSONOutput(results,filename,info=None):
     IMAGES=[]
     for r in results:
         if r['type']=='imaginable2D':
-            if ((isinstance(r['imaginable'],im.Imaginable))):
+            if ((isinstance(r['imaginable'],ima.Imaginable))):
                 theim=r['imaginable']
             elif isinstance(r['imaginable'],sitk.Image):
-                theim=im.Imaginable()
+                theim=ima.Imaginable()
                 theim.setImage(r['imaginable'])
             else:
                 try:

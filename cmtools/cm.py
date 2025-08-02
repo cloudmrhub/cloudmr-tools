@@ -190,6 +190,39 @@ def calculateCoilsSensitivityMask2D(mask,ref_img,K):
             TILE=[1]*2
             TILE.append(ncoils)
             sensmask = np.tile(np.expand_dims(sensmask,axis=-1), TILE)
+           
+    #check for accelration mismatch between k ans signal
+    # if K size is different from sensmask size, resize it if the difference is small (<4)
+    if K is not None:
+        K0, K1 = K.shape[:2]
+        s0, s1 = sensmask.shape[:2]
+        d0, d1 = K0 - s0, K1 - s1
+
+        if abs(d0) < 4 and abs(d1) < 4 and (d0 or d1):
+            # 1) center‐crop if too big
+            start0 = max((s0 - K0)//2, 0)
+            start1 = max((s1 - K1)//2, 0)
+            sensmask = sensmask[
+                start0:start0 + min(s0, K0),
+                start1:start1 + min(s1, K1),
+                :
+            ]
+
+            # 2) pad if too small
+            pad0 = max(-d0, 0)
+            pad1 = max(-d1, 0)
+            pad_top = pad0//2;    pad_bottom = pad0 - pad_top
+            pad_left = pad1//2;   pad_right  = pad1 - pad_left
+
+            sensmask = np.pad(
+                sensmask,
+                ((pad_top, pad_bottom),
+                (pad_left, pad_right),
+                (0, 0)),
+                mode='constant',
+                constant_values=0
+            )
+            
 
     return sensmask.astype(np.uint8)
         

@@ -824,7 +824,7 @@ def getUndersampleGrids(K, acceleration=[1,2]):
 
     return K
 import numpy as np
-def mimicReference2D(K,ACL,filter=None):
+def mimicReference2D(K,ACL,filter='hanning'):
     REFERENCE=np.zeros_like(K)
     x,y=getACLGrids(K,acl=ACL)
     

@@ -907,8 +907,6 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
         R.setPrewhitenedSignal(K)
         return R.getOutput()
 
-
-
 ##MR PMR
 class cm2DSignalToNoiseRatio(cm.cmOutput):
     def __init__(self, message=None):
@@ -1118,6 +1116,5 @@ class cm2DSignalToNoiseRatioPseudoMultipleReplicasWein(cm2DSignalToNoiseRatioPse
             self.setReferenceImage(self.reconstructor.getOutput())
         r=self.getReferenceImage()-self.getImageArrayMean()
         return cm.get_wien_noise_image(r,self.boxSize)
-
 
 

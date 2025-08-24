@@ -419,7 +419,7 @@ def create_fake_noise_kspace_data(shape, correlation_matrix=None):
     return get_pseudo_noise(shape, corr_noise_factor)
 
 
-def MRifft(k,dim):
+def MRifft(k,dim=[0,1]):
     """
     Reconstruct individual coils' images and apply FFT scale factor
     iFFT scales data by 1/sqrt(N), so I need to scale back, as the noise covariance
@@ -721,7 +721,7 @@ def retrieveAutocalibrationsLines2DKSpace(K,Autocalibration=[1,2],padded=True):
     if padded:
         return OK
     else:
-        return OK[np.min(x):np.max(x),np.min(y):np.max(y)]
+        return OK[np.min(x):np.max(x)+1,np.min(y):np.max(y)+1]
         
 
 #defiined in mro

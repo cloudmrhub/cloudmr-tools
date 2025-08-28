@@ -19,6 +19,8 @@ def getGRAPPAKspace(rawdata, acs, ksize):
 
 
 
+
+
 def getPackagesVersion():
     PKG=['cloudmr-utils','pynico_eros_montin','cmrawspy','pygrappa','twixtools','numpy','scipy','matplotlib','pydicom','SimpleITK','PIL','pyable_eros_montin']
     

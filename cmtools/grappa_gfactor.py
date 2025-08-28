@@ -1,5 +1,4 @@
 import numpy as np
-import numpy as np
 from scipy.io import savemat
 def print_sub(M, IND, *, base=0, order='F'):
     """
@@ -494,8 +493,8 @@ def grappa_gfactor(data, calib, noise, R, kernel, tol=None, debug=False):
     G = np.reshape(np.sqrt(np.abs(Wv) / np.abs(p)), (Mx, My, Mz), order='F') / np.prod(R)
 
     # 6) data = reshape(conj(data), Nc, Mx, My, Mz);   % restore original shape
-    data = np.reshape(np.conj(d2), (Nc, Mx, My, Mz), order='F')
+    # data = np.reshape(np.conj(d2), (Nc, Mx, My, Mz), order='F')
     
     
     
-    return data,G
+    return G

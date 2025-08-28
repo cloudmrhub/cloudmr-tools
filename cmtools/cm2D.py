@@ -1,8 +1,10 @@
 import numpy as np
 try:
     import cm #dev
+    import grappa_gfactor as gf
 except:
     import cmtools.cm as cm #runtime
+    import cmtools.grappa_gfactor as gf
     
 import matplotlib.pyplot as plt
 import scipy
@@ -896,16 +898,43 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
             print(ss)
         return R
 
-
-    def getOutput(self):
+    def getSignalKSpaceGRAPPAFullysampled(self):
         grappa_kernel=self.GRAPPAKernel
         data_acs=self.getPrewhitenedReferenceKSpaceACL() #ACLxACxnc
         pw_signalrawdata=self.getPrewhitenedSignal() #fxpxc
         K=cm.getGRAPPAKspace(pw_signalrawdata,data_acs,grappa_kernel)
         K=self.checkKSpacePixelType(K)
+        return K
+        
+    def getOutput(self):
+        K=self.getSignalKSpaceGRAPPAFullysampled()
         R=self.reconstructor
         R.setPrewhitenedSignal(K)
         return R.getOutput()
+    
+class cm2DKellmanGRAPPA(cm2DReconGRAPPA):
+    def __init__(self):
+        super().__init__()
+        self.reconstructor=cm2DKellmanRSS()
+    
+    def getOutput(self):
+        K=self.getSignalKSpaceGRAPPAFullysampled()
+        R=self.reconstructor
+        R.setSignalKSpace(K)
+        R.setPrewhitenedSignal(K)
+        R.setNoiseCovariance(self.getNoiseCovariance())
+        SNRfull=R.getOutput()
+        # compute the gfactor
+        us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
+        
+        calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
+        us=np.expand_dims(us,-1)
+        calib=np.expand_dims(calib,-1)
+        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel)
+        G=np.squeeze(G)
+        G*=np.sqrt(self.getR())
+        return np.divide(SNRfull,G)
+        
 
 ##MR PMR
 class cm2DSignalToNoiseRatio(cm.cmOutput):
@@ -1118,3 +1147,36 @@ class cm2DSignalToNoiseRatioPseudoMultipleReplicasWein(cm2DSignalToNoiseRatioPse
         return cm.get_wien_noise_image(r,self.boxSize)
 
 
+
+if __name__=="__main__":
+    print("This is a module, please run test.py")
+    import pynico_eros_montin.pynico as pn
+    import os
+    D=os.path.dirname(os.path.realpath(__file__)) +"/testdata.pkl"
+    a=pn.Pathable(D)
+    A=a.readPkl()
+
+    S=A[0]["signal"]
+    N=A[0]["noise"]
+    FA=1
+    PA=3
+    ACLF=28
+    ACLP=28
+    GK=[5,5]
+
+    US,REF=cm.mimicAcceleration2D(S,[FA,PA],[ACLF,ACLP])
+    L=cm2DKellmanGRAPPA()
+    L.setSignalKSpace(US)
+    L.setAcceleration([FA,PA])
+    L.setAutocalibrationLines([ACLF,ACLP])
+    L.setNoiseKSpace(N)
+    L.setGRAPPAKernel(GK)
+    L.setReferenceKSpace(REF)
+    
+    import matplotlib.pyplot as plt
+    plt.figure()
+    plt.imshow(np.abs(L.getOutput()),cmap='gray')
+    plt.colorbar()
+    plt.title('GRAPPA SNR Reconstruction')
+
+    plt.show()

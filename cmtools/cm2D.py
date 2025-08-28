@@ -922,7 +922,10 @@ class cm2DKellmanGRAPPA(cm2DReconGRAPPA):
         R=self.reconstructor
         R.setSignalKSpace(K)
         R.setPrewhitenedSignal(K)
-        R.setNoiseCovariance(self.getNoiseCovariance())
+        R.setNoiseCovariance(np.eye(self.getSignalNCoils()))
+        if self.reconstructor.HasSensitivity:
+            R.getPrewhitenedReferenceKSpace(self.getPrewhitenedReferenceKSpace())
+            
         SNRfull=R.getOutput()
         # compute the gfactor
         us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
@@ -930,7 +933,7 @@ class cm2DKellmanGRAPPA(cm2DReconGRAPPA):
         calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
         us=np.expand_dims(us,-1)
         calib=np.expand_dims(calib,-1)
-        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel)
+        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
         G=np.squeeze(G)
         G*=np.sqrt(self.getR())
         return np.divide(SNRfull,G)
@@ -1159,9 +1162,9 @@ if __name__=="__main__":
     S=A[0]["signal"]
     N=A[0]["noise"]
     FA=1
-    PA=3
-    ACLF=28
-    ACLP=28
+    PA=4
+    ACLF=48
+    ACLP=48
     GK=[5,5]
 
     US,REF=cm.mimicAcceleration2D(S,[FA,PA],[ACLF,ACLP])

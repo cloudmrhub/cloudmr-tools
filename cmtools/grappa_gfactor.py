@@ -367,7 +367,6 @@ def grappa_gfactor(data, calib, noise, R, kernel, tol=None, debug=False):
     n_types = int(np.prod(R[1:])) - 1 #or Cartesian GRAPPA with undersampling only along y/z, there are prod(R(2:3)) - 1 distinct hole positions relative to the acquired lines.
     for type_ in range(n_types):
         #Loop over type = 1 … (prod(R(2:3)) - 1). Each type corresponds to a different relative (yy, zz) offset of a missing point within an R(2) × R(3) cell.
-        print(f"[DBG] type_={type_+1}/{n_types} ({type_})") if debug else None
         pad     = tuple(np.floor(np.array(R) * np.array(kernel) / 2).astype(int))  # floor(R.*kernel/2)
         # pad = (2, 5, 0)
 
@@ -382,7 +381,6 @@ def grappa_gfactor(data, calib, noise, R, kernel, tol=None, debug=False):
         B = calib_trg
         weights = B @ pinv_reg(A)     # shape: (Nc, N_targets, Nc)
         
-        print(f"[DBG] W.shape={W.shape}") if debug else None
         
         kpts = calib_src.shape[0] // Nc
         weights = np.reshape(weights, (Nc, Nc, kpts), order='F')
@@ -412,7 +410,6 @@ def grappa_gfactor(data, calib, noise, R, kernel, tol=None, debug=False):
             W[i,j,c]= np.expand_dims(weights[c, :, :].ravel(order='F'),axis=-1)
         # from scipy.io import savemat
         # savemat(f'/g/src{type_:02d}.mat', {'W': W})  # Save W for debugging
-    print(f"[DBG] W[{type_}] shape: {W.shape}") # check with matlab till here
     # ---- (4) APPLY WEIGHTS TO DATA ----
     
         

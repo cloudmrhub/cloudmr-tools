@@ -883,6 +883,7 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
         us=np.expand_dims(us,-1)
         calib=np.expand_dims(calib,-1)
         G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
+        G=np.squeeze(G)
         return G
 
     def setGRAPPAKernel(self,GK):
@@ -934,7 +935,6 @@ class cm2DKellmanGRAPPA(cm2DReconGRAPPA):
             
         SNRfull=R.getOutput()
         G=self.getGFactor()
-        G=np.squeeze(G)
         G*=np.sqrt(self.getR())
         return np.divide(SNRfull,G)
         

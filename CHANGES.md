@@ -1,3 +1,5 @@
+# version 2.2.3
+grappa AM SNR and g-factor
 # version 2.2.1
 masks adapted in case of acceleration to match k-space dimensions
 # version 2.0.0.6

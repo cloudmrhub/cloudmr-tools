@@ -468,8 +468,6 @@ def grappa_gfactor(data, calib, noise, R, kernel, tol=None, debug=False):
     res = np.sum(W * data, axis=1)   # sum over Nc_in
     data = np.squeeze(res)
     
-    savemat('/g/data.mat', {'data': data, 'W': W})  # Save data and W for debugging
-
 
     Nvox = Mx * My * Mz
 

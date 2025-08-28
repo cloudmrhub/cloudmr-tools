@@ -876,8 +876,14 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
         RF=self.getPrewhitenedReferenceKSpace()
         return cm.getAutocalibrationsLines2DKSpace(RF,self.Autocalibration)
 
-
-
+    def getGFactor(self):
+        # compute the gfactor
+        us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
+        calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
+        us=np.expand_dims(us,-1)
+        calib=np.expand_dims(calib,-1)
+        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
+        return G
 
     def setGRAPPAKernel(self,GK):
         self.GRAPPAKernel=GK
@@ -927,13 +933,7 @@ class cm2DKellmanGRAPPA(cm2DReconGRAPPA):
             R.getPrewhitenedReferenceKSpace(self.getPrewhitenedReferenceKSpace())
             
         SNRfull=R.getOutput()
-        # compute the gfactor
-        us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
-        
-        calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
-        us=np.expand_dims(us,-1)
-        calib=np.expand_dims(calib,-1)
-        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
+        G=self.getGFactor()
         G=np.squeeze(G)
         G*=np.sqrt(self.getR())
         return np.divide(SNRfull,G)

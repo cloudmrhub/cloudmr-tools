@@ -864,6 +864,7 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
         self.GRAPPAKernel=[3,2]
         self.PrewhitenedSignalKspaceACL=cm.k2d()
         self.reconstructor=cm2DReconRSS()
+        self.gfactor=cm.k2d()
 
     
     def getPrewhitenedReferenceKSpaceACL(self):
@@ -878,13 +879,15 @@ class cm2DReconGRAPPA(cm2DReconWithSensitivityAutocalibrated):
 
     def getGFactor(self):
         # compute the gfactor
-        us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
-        calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
-        us=np.expand_dims(us,-1)
-        calib=np.expand_dims(calib,-1)
-        G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
-        G=np.squeeze(G)
-        return G
+        if self.gfactor.isEmpty():            
+            us=np.transpose(self.getPrewhitenedSignal(),(2,0,1)) #pxfxc
+            calib=np.transpose(self.getPrewhitenedReferenceKSpaceACL(),(2,0,1)) #ACLxACxnc
+            us=np.expand_dims(us,-1)
+            calib=np.expand_dims(calib,-1)
+            G=gf.grappa_gfactor(us,calib,self.getNoiseCovariance(), [1, self.getR()],self.GRAPPAKernel,debug=False)
+            G=np.squeeze(G)
+            self.gfactor.set(G)
+        return self.gfactor.get()
 
     def setGRAPPAKernel(self,GK):
         self.GRAPPAKernel=GK

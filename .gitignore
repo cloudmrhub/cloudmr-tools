@@ -9,3 +9,5 @@ cmtools/dev*
 *.mat
 .vscode/
 
+.testvenv
+__pycache__/

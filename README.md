@@ -32,9 +32,13 @@ python3 -m venv CMT
 source CMT/bin/activate
 pip install git+https://github.com/cloudmrhub/cloudmr-tools.git
 ```
-# Live Example
+# Tutorial
 
 https://colab.research.google.com/drive/1WIEwRrNy9rpo_2X_zVdwRHRtH4ImPaan?usp=sharing
+
+Try our tools in your browser — no installation required:
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1WIEwRrNy9rpo_2X_zVdwRHRtH4ImPaan?usp=sharing)
 
 # Cite Us
 If you use **Cloudmr-tools** in your research, please cite:
